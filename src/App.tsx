@@ -1236,7 +1236,7 @@ Requirements:
 - Tone: ${form.tone}
 - Keep it under 350 words`;
 
-      const apiKey = typeof process !== "undefined" && process.env ? process.env.VITE_ANTHROPIC_API_KEY : "";
+const apiKey = (window as any).__ANTHROPIC_KEY__ || "";
       const response = await fetch("https://api.anthropic.com/v1/messages", {
         method:"POST",
         headers:{
