@@ -1222,20 +1222,7 @@ function CoverLetterBuilder() {
     setGenerating(true);
     setError("");
     try {
-      const prompt = `Write a compelling, ${form.tone.toLowerCase()} cover letter for ${form.name} applying for the position of ${form.jobTitle} at ${form.company} in the ${form.industry} industry.
-
-Key points to highlight: ${form.keyPoints}
-
-Requirements:
-- Address it to "${form.hiringManager}"
-- 3-4 paragraphs, professional and engaging
-- Highlight the key points naturally, don't just list them
-- End with a strong call to action
-- Sign off with the applicant's name: ${form.name}
-- Do NOT include the date, address headers, or subject line — just the letter body starting with "Dear ${form.hiringManager},"
-- Tone: ${form.tone}
-- Keep it under 350 words`;
-
+const prompt = "Write a compelling, " + form.tone.toLowerCase() + " cover letter for " + form.name + " applying for the position of " + form.jobTitle + " at " + form.company + " in the " + form.industry + " industry.\n\nKey points to highlight: " + form.keyPoints + "\n\nRequirements:\n- Address it to " + form.hiringManager + "\n- 3-4 paragraphs, professional and engaging\n- Highlight the key points naturally\n- End with a strong call to action\n- Sign off with: " + form.name + "\n- Do NOT include date or address headers\n- Tone: " + form.tone + "\n- Keep it under 350 words";
 const response = await fetch("/api/generate", {
   method:"POST",
   headers:{"Content-Type":"application/json"},
