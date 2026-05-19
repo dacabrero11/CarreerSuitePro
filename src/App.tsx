@@ -1236,21 +1236,11 @@ Requirements:
 - Tone: ${form.tone}
 - Keep it under 350 words`;
 
-const apiKey = (window as any).__ANTHROPIC_KEY__ || "";
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json",
-          "x-api-key": apiKey || "",
-          "anthropic-version":"2023-06-01",
-          "anthropic-dangerous-direct-browser-access":"true"
-        },
-        body: JSON.stringify({
-          model:"claude-sonnet-4-20250514",
-          max_tokens:1000,
-          messages:[{role:"user",content:prompt}],
-        }),
-      });
+const response = await fetch("/api/generate", {
+  method:"POST",
+  headers:{"Content-Type":"application/json"},
+  body: JSON.stringify({ prompt }),
+});
       const data = await response.json();
       if (data.content && data.content[0]?.text) {
         upd("letterBody", data.content[0].text.trim());
