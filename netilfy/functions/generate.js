@@ -1,11 +1,11 @@
-exports.handler = async (event) => {
+export default async (req, context) => {
   try {
-    const { prompt } = JSON.parse(event.body);
+    const { prompt } = await req.json();
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": process.env.ANTHROPIC_API_KEY,
+        "x-api-key": Netlify.env.get("ANTHROPIC_API_KEY"),
         "anthropic-version": "2023-06-01"
       },
       body: JSON.stringify({
@@ -15,8 +15,10 @@ exports.handler = async (event) => {
       })
     });
     const data = await response.json();
-    return { statusCode: 200, body: JSON.stringify(data) };
+    return Response.json(data);
   } catch(e) {
-    return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
+    return Response.json({ error: e.message }, { status: 500 });
   }
 };
+
+export const config = { path: "/.netlify/functions/generate" };
