@@ -1222,12 +1222,13 @@ function CoverLetterBuilder() {
     setGenerating(true);
     setError("");
     try {
-const prompt = "Write a compelling, " + form.tone.toLowerCase() + " cover letter for " + form.name + " applying for the position of " + form.jobTitle + " at " + form.company + " in the " + form.industry + " industry.\n\nKey points to highlight: " + form.keyPoints + "\n\nRequirements:\n- Address it to " + form.hiringManager + "\n- 3-4 paragraphs, professional and engaging\n- Highlight the key points naturally\n- End with a strong call to action\n- Sign off with: " + form.name + "\n- Do NOT include date or address headers\n- Tone: " + form.tone + "\n- Keep it under 350 words";
-const response = await fetch("/api/generate", {
-  method:"POST",
-  headers:{"Content-Type":"application/json"},
-  body: JSON.stringify({ prompt }),
-});
+      const prompt = "Write a compelling, " + form.tone.toLowerCase() + " cover letter for " + form.name + " applying for the position of " + form.jobTitle + " at " + form.company + " in the " + form.industry + " industry.\n\nKey points to highlight: " + form.keyPoints + "\n\nRequirements:\n- Address it to \"" + form.hiringManager + "\"\n- 3-4 paragraphs, professional and engaging\n- Highlight the key points naturally, don\'t just list them\n- End with a strong call to action\n- Sign off with the applicant\'s name: " + form.name + "\n- Do NOT include the date, address headers, or subject line\n- Tone: " + form.tone + "\n- Keep it under 350 words";
+
+      const response = await fetch("/api/generate", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({ prompt }),
+      });
       const data = await response.json();
       if (data.content && data.content[0]?.text) {
         upd("letterBody", data.content[0].text.trim());
