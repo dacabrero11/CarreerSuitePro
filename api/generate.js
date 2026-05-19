@@ -4,14 +4,18 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   
   if (req.method === "OPTIONS") return res.status(200).end();
-  
-  try {
-    let body = req.body;
-    if (typeof body === "string") body = JSON.parse(body);
-    const { prompt } = body;
 
-    if (!prompt) {
-      return res.status(400).json({ error: "No prompt provided" });
+  try {
+    let prompt;
+    if (typeof req.body === "string") {
+      prompt = JSON.parse(req.body).prompt;
+    } else if (req.body && req.body.prompt) {
+      prompt = req.body.prompt;
+    } else {
+      const chunks = [];
+      for await (const chunk of req) chunks.push(chunk);
+      const raw = Buffer.concat(chunks).toString();
+      prompt = JSON.parse(raw).prompt;
     }
 
     const response = await fetch("https://api.anthropic.com/v1/messages", {
